@@ -1,22 +1,8 @@
-import fs from 'fs';
-import path from 'path';
-
-const dirname = path.dirname(new URL(import.meta.url).pathname);
-const publicPath = path.join(dirname, '..', '..', 'public', 'r.png');
+import _download from "../moduls/download.module.js";
 
 class UserController{
-    async download(){
-        const filePath = publicPath;
-    
-        // Создаем поток чтения файла
-        const fileStream = fs.createReadStream(filePath);
-      
-        // Устанавливаем заголовки
-        res.setHeader('Content-Type', 'text/plain');
-        res.setHeader('Content-Disposition', 'attachment; filename="r.png"');
-      
-        // Передаем поток в response
-        fileStream.pipe(res);
+    async download(req, res){
+        await _download(req, res);
     }
 }
 
