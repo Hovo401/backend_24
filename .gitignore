@@ -4,8 +4,6 @@
 /.pnp
 .pnp.js
 
-/public
-
 # testing
 /coverage
 
