@@ -1,8 +1,8 @@
 import fs from 'fs';
 import path from 'path';
+import {__publicDirName} from '../utils/utils.js';
 
-const dirname = path.dirname(new URL(import.meta.url).pathname);
-const publicPath = path.join(dirname, '..', '..', 'public', 'r.png');
+const publicPath = path.join(__publicDirName, 'r.jpg');
 
 
 const download = async()=>{
@@ -13,8 +13,10 @@ const download = async()=>{
     
     // Устанавливаем заголовки
     res.setHeader('Content-Type', 'text/plain');
-    res.setHeader('Content-Disposition', 'attachment; filename="r.png"');
+    res.setHeader('Content-Disposition', 'attachment; filename="r.jpg"');
     
     // Передаем поток в response
     fileStream.pipe(res);
 }
+
+export default download;
