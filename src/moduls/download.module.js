@@ -5,7 +5,7 @@ import {__publicDirName} from '../utils/utils.js';
 const publicPath = path.join(__publicDirName, 'r.jpg');
 
 const download = async(req, res) => {
-    const filePath = '\\C:\\Users\\HP\\Desktop\\backend_24\\public\\r.jpg';
+    const filePath = publicPath;
     console.log(filePath)
     // Check if the file exists
     if (!fs.existsSync(publicPath)) {
