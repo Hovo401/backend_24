@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import {__publicDirName} from '../utils/utils.js';
+import {__publicDirName} from '../1_libs/utils.js';
 
 const publicPath = path.join(__publicDirName, 'r.jpg');
 
