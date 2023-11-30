@@ -1,7 +1,7 @@
 import path from 'path';
 import _download from "../moduls/download.module.js";
 import {__publicDirName} from '../1_libs/utils.js';
-
+import {runQuery} from '../moduls/bd/client.query.bd.modulet.js'
 
 class DownloadController{
     async download(req, res){
