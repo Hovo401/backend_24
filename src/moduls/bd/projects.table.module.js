@@ -1,15 +1,9 @@
 import { query, pool } from './libs/bd.module.js';
+import { tableSelect } from './libs/TableBD.class.module.js';
 
 async function getProjectsItems(offset = 0, pageSize = 3) {
     try {
-        const result = await query(
-            `SELECT * FROM projects` +
-            ` ORDER BY ID DESC` +
-            ` LIMIT $1 OFFSET $2`,
-            [pageSize, offset]
-        );
-       // console.log(result?.rows ?? [])
-        return result?.rows ?? [];
+        return tableSelect({offset, pageSize}, 'projects');
     } catch (error) {
         console.error('Error executing query: ', error.message);
         return null;
@@ -22,12 +16,15 @@ async function getProjectsItemsCount() {
             `SELECT COUNT(*) FROM projects`
         );
         if(result?.rows[0]?.count){
-            return result?.rows[0]?.count ?? [];
+            return result.rows[0].count;
         }
-        return [];
+        return null;
     } catch (error) {
         console.error('Error executing query: ', error.message);
         return null;
     }
 }
+
+
+
 export { getProjectsItems, getProjectsItemsCount };

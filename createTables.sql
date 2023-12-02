@@ -8,7 +8,8 @@ CREATE TABLE projects (
 	deadline_max_day DECIMAL(4, 0) CHECK (deadline_max_day > 0),
     types project_types[],
     url VARCHAR(300),
-    date_create TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    date_create TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT no_duplicate_communication_method CHECK (array_has_no_duplicates(types))
 );
 
 
@@ -26,11 +27,11 @@ CREATE TABLE reviews (
 CREATE TABLE services_prices (
     ID SERIAL PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
-    short_description VARCHAR(3000),
+    short_description VARCHAR(3000)  NOT NULL,
     deadlines DECIMAL(4, 0) CHECK (deadlines >= 0),
-    hit BOOLEAN,
+    hit BOOLEAN DEFAULT FALSE,
     price DECIMAL(12, 2) CHECK (price >= 0), 
-    currency VARCHAR(3),
+    currency VARCHAR(3) DEFAULT "RUB",
     price_individually BOOLEAN DEFAULT FALSE,
     time_individually BOOLEAN DEFAULT FALSE,
     date_create TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -47,11 +48,12 @@ CREATE TYPE communication_methods AS ENUM ('Telegram', 'WhatsApp');
 
 CREATE TABLE applications (
     ID SERIAL PRIMARY KEY,
-    communication_method communication_methods[],
+    communication_method communication_methods[] ,
     client_name VARCHAR(255) NOT NULL,
     phone VARCHAR(20) NOT NULL,
 	processed BOOLEAN DEFAULT FALSE,
-    date_create TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    date_create TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT no_duplicate_communication_method CHECK (array_has_no_duplicates(communication_method))
 );
 
 CREATE TABLE messages (
@@ -61,5 +63,6 @@ CREATE TABLE messages (
     phone VARCHAR(20) NOT NULL,
     message VARCHAR(3000),
 	processed BOOLEAN DEFAULT FALSE,
-    date_create TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    date_create TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	CONSTRAINT no_duplicate_communication_method CHECK (array_has_no_duplicates(communication_method))
 );

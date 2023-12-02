@@ -15,16 +15,11 @@ const pool = new Pool({
 
 
 const query = async (text, params) => {
-  try {
     //const start = Date.now();
     const result = await pool.query(text, params);
     //const duration = Date.now() - start;
     // console.log('Executed query', { text, duration, rows: result.rowCount });
     return result;
-  } catch (error) {
-    console.error('Error executing query:', error);
-    throw error;
-  }
 };
 
 

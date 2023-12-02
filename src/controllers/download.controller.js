@@ -1,7 +1,8 @@
 import path from 'path';
 import fs from 'fs';
 import {__downloadsDirName} from '../1_libs/utils.js';
-import {addDownloadQuantity} from '../moduls/bd/download.table.bd.modulet.js';
+import {addDownloadQuantity} from '../moduls/bd/download.table.modulet.js';
+import handleError from '../1_libs/handleError.js';
 
 class DownloadController{
     async download(req, res){
@@ -19,8 +20,7 @@ class DownloadController{
                 res.status(404);
             }
         }catch(e){
-            console.error(e);
-            res.status(500).json({ error: `Server error` });
+            handleError(e, res);
         }
     }
 }
