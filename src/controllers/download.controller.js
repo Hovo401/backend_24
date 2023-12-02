@@ -20,6 +20,7 @@ class DownloadController{
             }
         }catch(e){
             console.error(e);
+            res.status(500).json({ error: `Server error` });
         }
     }
 }

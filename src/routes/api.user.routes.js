@@ -1,8 +1,8 @@
 import Router from 'express';
-import userController from '../controllers/download.controller.js'
+import userController from '../controllers/user.controller.js';
 
 const router = Router();
 
-//router.get('/', userController.download);
+router.get('/projectsItems', userController.projectsItems);
 
 export default router; 
