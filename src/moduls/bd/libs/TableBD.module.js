@@ -34,7 +34,7 @@ async function tableSelect({ offset = 0, pageSize = 3 }, tableName) {
       `SELECT * FROM ${tableName} ORDER BY ID DESC LIMIT $1 OFFSET $2`,
       [pageSize, offset]
     );
-    return result.rows;
+    return result;
   } catch (error) {
     throw new TableSelectError('Ошибка при выборе данных из таблицы. : ' + error.message);
   }
@@ -57,7 +57,7 @@ async function tableInsert(data, tableName) {
       VALUES
     );
 
-    return result.rows;
+    return result;
   } catch (error) {
     throw new TableInsertError('Ошибка при вставке данных в таблицу. : ' + error.message);
   }
@@ -72,7 +72,7 @@ async function tableDeleteRow({ id }, tableName) {
       [id]
     );
 
-    return result.rows;
+    return result;
   } catch (error) {
     throw new TableDeleteRowError('Ошибка при удалении строки из таблицы. : ' + error.message);
   }
@@ -97,10 +97,31 @@ async function tableUpdateRow(data, tableName) {
       [...VALUES, id]
     );
 
-    return result.rows;
+    return result;
   } catch (error) {
     throw new TableUpdateRowError('Ошибка при обновлении строки в таблице. : ' + error.message);
   }
 }
 
-export { tableSelect, tableInsert, tableDeleteRow, tableUpdateRow };
+async function getItemsCountByName(tableName) {
+  const result = await query(
+      `SELECT COUNT(*) FROM ${tableName}`
+  );
+  if(result?.rows[0]?.count){
+      return result.rows[0].count;
+  }
+  return null;
+}
+
+async function query_(sql , params) {
+  try {
+
+    const result = await query(sql, params);
+    return result;
+
+  } catch (error) {
+    throw new Error('Ошибка при запросе. : ' + error.message);
+  }
+}
+
+export { tableSelect, tableInsert, tableDeleteRow, tableUpdateRow, getItemsCountByName, query_ };

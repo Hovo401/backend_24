@@ -66,3 +66,24 @@ CREATE TABLE messages (
     date_create TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	CONSTRAINT no_duplicate_communication_method CHECK (array_has_no_duplicates(communication_method))
 );
+
+
+
+
+
+
+
+
+
+
+-- CREATE OR REPLACE FUNCTION array_has_no_duplicates(arr anyarray)
+-- RETURNS BOOLEAN AS $$
+-- BEGIN
+--     RETURN NOT EXISTS (
+--         SELECT 1
+--         FROM unnest(arr) a
+--         GROUP BY a
+--         HAVING COUNT(a) > 1
+--     );
+-- END;
+-- $$ LANGUAGE plpgsql;
