@@ -1,11 +1,26 @@
 import path from 'path';
-import _download from "../moduls/download.module.js";
-import {__publicDirName} from '../1_libs/utils.js';
-import {runQuery} from '../moduls/bd/client.query.bd.modulet.js'
+import fs from 'fs';
+import {__downloadsDirName} from '../1_libs/utils.js';
+import {addDownloadQuantity} from '../moduls/bd/download.table.bd.modulet.js';
 
 class DownloadController{
     async download(req, res){
-        res.download(path.resolve(__publicDirName, 'r.jpg'));
+        try{
+            const fname = req?.query?.fname ?? '',
+                 filePath = path.resolve(__downloadsDirName, fname);
+
+            if( fname === '' ){
+                res.status(400);
+            }
+            else if( fs.existsSync(filePath) ){
+                await res.download(filePath);
+                await addDownloadQuantity();
+            }else{
+                res.status(404);
+            }
+        }catch(e){
+            console.error(e);
+        }
     }
 }
 

@@ -3,6 +3,6 @@ import userController from '../controllers/download.controller.js'
 
 const router = Router();
 
-router.get('/download', userController.download);
+//router.get('/', userController.download);
 
 export default router; 
