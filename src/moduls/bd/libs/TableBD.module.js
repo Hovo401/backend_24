@@ -31,7 +31,7 @@ class TableUpdateRowError extends Error {
 async function tableSelect({ offset = 0, pageSize = 3 }, tableName) {
   try {
     const result = await query(
-      `SELECT * FROM ${tableName} ORDER BY ID DESC LIMIT $1 OFFSET $2`,
+      `SELECT * FROM ${tableName} ORDER BY date_create DESC LIMIT $1 OFFSET $2`,
       [pageSize, offset]
     );
     return result;
@@ -63,7 +63,7 @@ async function tableInsert(data, tableName) {
   }
 }
 
-async function tableDeleteRow({ id }, tableName) {
+async function tableDeleteRow( id , tableName) {
   try {
     if (!id) throw new TableDeleteRowError('ID обязателен для операции удаления.');
 
@@ -86,6 +86,7 @@ async function tableUpdateRow(data, tableName) {
 
     const VALUES = [];
     const updateFields = Object.entries(updateData)
+      .filter(([_, value]) => value !== undefined)
       .map(([key], index) => {
         VALUES.push(updateData[key]);
         return `${key} = $${index + 1}`;
@@ -93,10 +94,14 @@ async function tableUpdateRow(data, tableName) {
       .join(', ');
 
     const result = await query(
-      `UPDATE ${tableName} SET ${updateFields} WHERE ID = $${updateData.length + 1}`,
+      `UPDATE ${tableName} SET ${updateFields} WHERE ID = $${VALUES.length + 1}`,
       [...VALUES, id]
     );
-
+    console.log(result)
+    if(result.rowCount === 0){
+        throw new TableUpdateRowError('нет строки, id: '+ id);
+    }
+    console.log(result)
     return result;
   } catch (error) {
     throw new TableUpdateRowError('Ошибка при обновлении строки в таблице. : ' + error.message);

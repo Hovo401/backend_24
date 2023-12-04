@@ -10,7 +10,7 @@ async function addDownloadQuantity() {
 async function getDownloadQuantity() {
 
   const result = await query(`SELECT date_create FROM downloads`);
-  return result?.rows ?? [];
+  return result?.rows ;
 
 }
 

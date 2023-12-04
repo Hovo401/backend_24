@@ -6,8 +6,9 @@ CREATE TABLE projects (
     short_description VARCHAR(3000),
     deadline_min_day DECIMAL(4, 0) CHECK (deadline_min_day > 0),
 	deadline_max_day DECIMAL(4, 0) CHECK (deadline_max_day > 0),
-    types project_types[],
-    url VARCHAR(300),
+    types project_types[] NOT NULL,
+    url VARCHAR(300) DEFAULT '',
+    imgUrl VARCHAR(300) DEFAULT '',
     date_create TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT no_duplicate_communication_method CHECK (array_has_no_duplicates(types))
 );
@@ -40,7 +41,6 @@ CREATE TABLE services_prices (
 CREATE TABLE downloads (
     date_create TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
-
 
 
 
